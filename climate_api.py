@@ -14,3 +14,5 @@ def get_dados(cidade):
     response = requests.get(url, headers=headers, params=querystring)
     return response.json()
 
+print(get_dados("Santa Luzia"))
+
