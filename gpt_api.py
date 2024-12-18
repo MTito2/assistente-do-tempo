@@ -2,34 +2,36 @@ import requests
 from config import CHAVE_GPT
 from climate_api import get_dados
 
-def ler_prompt():
+def ler_prompt(nome):
     caminho_arquivo = "prompt_gpt.txt"
 
     with open (caminho_arquivo, "r", encoding='utf-8') as arquivo:
-        prompt = arquivo.read()
-        
+        prompt = arquivo.read() + f"\n\nO nome do usuário é {nome}"
+
     return prompt
 
-def get_gpt(informacoes):
-    prompt = ler_prompt()
+def get_gpt(cidade, nome):
+    informacoes = get_dados(cidade)
 
-    url = "https://chatgpt-42.p.rapidapi.com/gpt4"
+    prompt = ler_prompt(nome)
 
-    payload = {
-        "messages": [
-            {
-                "role": "user",
-                "content": {"prompt":prompt, "info": informacoes}}
-        ],
-        "web_access": False
-    }
+    url = "https://api.openai.com/v1/chat/completions"
+
+        # Cabeçalhos da requisição
     headers = {
-        "x-rapidapi-key": CHAVE_GPT,
-        "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {CHAVE_GPT}"
     }
 
-    response = requests.post(url, json=payload, headers=headers)
+    # Corpo da requisição (dados que você vai passar)
+    data = {
+        "model": "gpt-3.5-turbo",  # ou outro modelo, como gpt-4
+        "messages": [{"role": "system", "content": informacoes},
+        {"role": "user", "content": prompt}]
+    }
 
-    return response.json()
+    # Fazer a requisição POST
+    response = requests.post(url, headers=headers, json=data)
 
+    result = response.json()
+    return result["choices"][0]["message"]["content"]
