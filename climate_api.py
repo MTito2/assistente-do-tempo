@@ -1,18 +1,26 @@
 import requests
+from config import CHAVE_WEATHER
 
 def get_dados(cidade):
+    string = ""
 
     url = "https://weatherapi-com.p.rapidapi.com/current.json"
 
     querystring = {"q":cidade}
 
     headers = {
-        "x-rapidapi-key": "63ea5ecf8bmsh5ea6c4f441a4064p13bff2jsn086fd722fb9f",
+        "x-rapidapi-key": CHAVE_WEATHER,
         "x-rapidapi-host": "weatherapi-com.p.rapidapi.com"
     }
 
     response = requests.get(url, headers=headers, params=querystring)
-    return response.json()
+    response = response.json()
+   
 
-print(get_dados("Santa Luzia"))
+    for chave, valor in response.items():
+        string += (f"{str(chave):}" + f"{str(valor)}")
+
+    return string
+    
+
 
