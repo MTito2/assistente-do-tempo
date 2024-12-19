@@ -1,13 +1,13 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart 
-from config import EMAIL_GMAIL, SENHA_GMAIL
+from config import EMAIL_GMAIL, SENHA_APP_GMAIL
 
 def enviar_email(destinatario, assunto, corpo):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
     email = EMAIL_GMAIL
-    password = SENHA_GMAIL
+    password = SENHA_APP_GMAIL
 
     # Criando o objeto do e-mail
     message = MIMEMultipart()

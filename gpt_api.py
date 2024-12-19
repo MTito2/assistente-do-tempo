@@ -17,20 +17,17 @@ def get_gpt(cidade, nome):
 
     url = "https://api.openai.com/v1/chat/completions"
 
-        # Cabeçalhos da requisição
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {CHAVE_GPT}"
     }
 
-    # Corpo da requisição (dados que você vai passar)
     data = {
         "model": "gpt-3.5-turbo",  # ou outro modelo, como gpt-4
         "messages": [{"role": "system", "content": informacoes},
         {"role": "user", "content": prompt}]
     }
 
-    # Fazer a requisição POST
     response = requests.post(url, headers=headers, json=data)
 
     result = response.json()
